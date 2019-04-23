@@ -8,7 +8,7 @@ const secure = express();
 secure.use(helmet())
 secure.disable('x-powered-by');
 secure.use(timeout('15s'));
-secure.set('view engine', 'jade');
+secure.set('view engine', 'pug');
 secure.use(express.static(__dirname + '/public'));
 secure.use(bodyParser.json({ type: 'application/json' }))
 
