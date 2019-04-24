@@ -1,10 +1,13 @@
 const Users = require('../models/Users')
+const options = {
+  runValidators: true
+}
 
 module.exports = {
 
   get: () => {
     return new Promise((resolve, reject) => {
-      Users.find({}, {_id: 0}).then(data => {
+      Users.find().then(data => {
         resolve(data)
       }).catch(err => {
         reject(err)
@@ -19,23 +22,41 @@ module.exports = {
       }, {_id: 0}).then(data => {
         if (data == 0) {
           throw err
-        } else {
-          resolve(data)
         }
+        resolve(data)
       }).catch(err => {
         reject(new Error('User ' + name + ' not found'))
       })
     })
-  }/*,
+  },
 
-  post: (params) => {
+  put: (body) => {
     return new Promise((resolve, reject) => {
-      Users.create(params).then(data => {
-        resolve(data)
+      id = body._id
+      delete body._id
+      Users.findByIdAndUpdate(id, body, options).then(data => {
+        if (data == null) {
+          throw new Error("Wrong ID.")
+        }
+        resolve("User data updated.")
       }).catch(err => {
         reject(err)
       })
     })
-  }*/
+  },
+
+  delete: (body) => {
+    return new Promise((resolve, reject) => {
+      id = body._id
+      Users.findByIdAndRemove(id).then(data => {
+        if (data == null) {
+          throw new Error("Wrong ID.")
+        }
+        resolve("User removed.")
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
 
 }
