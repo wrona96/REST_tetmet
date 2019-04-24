@@ -45,9 +45,8 @@ module.exports = {
     })
   },
 
-  delete: (body) => {
+  delete: (id) => {
     return new Promise((resolve, reject) => {
-      id = body._id
       Users.findByIdAndRemove(id).then(data => {
         if (data == null) {
           throw new Error("Wrong ID.")

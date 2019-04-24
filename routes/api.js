@@ -78,17 +78,18 @@ router.put('/:resource', (req, res) => {
 })
 
 // DELETE - delete entities:
-router.delete('/:resource', (req, res) => {
+router.delete('/:resource/:id', (req, res) => {
   const resource = req.params.resource
+  const id = req.params.id
   const controller = controllers[resource]
 
   if (controller == null) {
-    res.status(404).render('404', {title: '404: Page Not Found'});
+    res.json({confirmation: 'fail', message: 'Invalid Resource'})
+
     return
   }
-
-  console.error("DELETE in : /", resource, "\nBODY: \n", req.body);
-  controller.delete(req.body).then(data => {
+  console.error("delete in : /", resource, "/", id);
+  controller.delete(id).then(data => {
     res.json({confirmation: 'success', data: data})
   }).catch(err => {
     res.json({confirmation: 'fail', message: err.message})
