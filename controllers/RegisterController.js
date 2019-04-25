@@ -9,6 +9,7 @@ module.exports = {
   },
   post: (params) => {
     return new Promise((resolve, reject) => {
+      delete params.reg_time
       Register.create(params).then(data => {
         resolve('Succesfull registed.')
       }).catch(err => {

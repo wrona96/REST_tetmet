@@ -28,10 +28,7 @@ const Users = new mongoose.Schema({
   },
   reg_time: {
     type: Date,
-    default: Date.now,
-    validate: function() {
-      return validate.isAfter(this.reg_time.toString())
-    }
+    default: Date.now
   }
 },{versionKey: false})
 
