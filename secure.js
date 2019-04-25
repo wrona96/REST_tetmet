@@ -1,7 +1,8 @@
 const express = require('express');
-const helmet = require('helmet')
+const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const timeout = require('connect-timeout');
+const favicon = require('serve-favicon');
 
 //Init
 const secure = express();
@@ -10,6 +11,7 @@ secure.disable('x-powered-by');
 secure.use(timeout('15s'));
 secure.set('view engine', 'pug');
 secure.use(express.static(__dirname + '/public'));
+secure.use(favicon(__dirname + '/public/images/favicon.ico'));
 secure.use(bodyParser.json({ type: 'application/json' }))
 
 //redirect all to https
