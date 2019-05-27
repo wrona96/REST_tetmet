@@ -51,5 +51,42 @@ module.exports = {
         reject(err)
       })
     })
+  },
+
+  join: (eID, uID) => {
+    return new Promise((resolve, reject) => {
+      Events.findOne({_id: eID},{}).select('-_id -start_time -describe -tags -location').then(data => {
+        if (data == null){
+          throw new Error('Wrong event id.')
+        }
+        if (data.members.indexOf(uID) == -1){
+          data.members.push(uID)
+          Events.findOneAndUpdate({_id: eID},{members: data.members}).then()
+          resolve('Added to event.')
+        }
+        throw new Error('Only one ticket per person.')
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  },
+
+  leave: (eID, uID) => {
+    return new Promise((resolve, reject) => {
+      Events.findOne({_id: eID},{}).select('-_id -start_time -describe -tags -location').then(data => {
+        if (data == null){
+          throw new Error('Wrong event id.')
+        }
+        let index = data.members.indexOf(uID)
+        if (index > -1){
+          data.members.splice(index, 1)
+          Events.findOneAndUpdate({_id: eID},{members: data.members}).then()
+          resolve('Remove from event.')
+        }
+        throw new Error('You are not member at this event.')
+      }).catch(err => {
+        reject(err)
+      })
+    })
   }
 }

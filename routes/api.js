@@ -3,6 +3,33 @@ const router = Router();
 const controllers = require('../controllers')
 
 // GET - dump db data:
+router.get('/join/:eventid', (req, res) => {
+  const eventid = req.params.eventid
+  const userid = req.cookies.uID
+  if (userid == null){
+    res.json({confirmation: 'fail', message: 'Invalid Session/Cookie Value'})
+  }
+
+  controllers['event'].join(eventid, userid).then(data => {
+    res.json({confirmation: 'success', data: data})
+  }).catch(err => {
+    res.json({confirmation: 'fail', message: err.message})
+  })
+})
+
+router.get('/leave/:eventid', (req, res) => {
+  const eventid = req.params.eventid
+  const userid = req.cookies.uID
+  if (userid == null){
+    res.json({confirmation: 'fail', message: 'Invalid Session/Cookie Value'})
+  }
+
+  controllers['event'].leave(eventid, userid).then(data => {
+    res.json({confirmation: 'success', data: data})
+  }).catch(err => {
+    res.json({confirmation: 'fail', message: err.message})
+  })
+})
 router.get('/:resource', (req, res) => {
   const resource = req.params.resource
   const controller = controllers[resource]
