@@ -81,7 +81,7 @@ router.post('/:resource', (req, res) => {
   console.error(req.body);
   controller.post(req.body).then(data => {
     if (resource == 'login'){
-      res.cookie('uID', data, {maxAge: 1000 * 60 * 60, path: '/api', httpOnly: true})
+      res.cookie('uID', data, {maxAge: 1000 * 60 * 60 * 24, path: '/api', httpOnly: true})
       res.json({confirmation: 'success', data: data})
       return
     }
