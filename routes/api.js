@@ -80,6 +80,11 @@ router.post('/:resource', (req, res) => {
 
   console.error(req.body);
   controller.post(req.body).then(data => {
+    if (resource == 'login'){
+      res.cookie('uID', data, {maxAge: 1000 * 60 * 60, path: '/api', httpOnly: true})
+      res.json({confirmation: 'success', data: data})
+      return
+    }
     res.json({confirmation: 'success', data: data})
   }).catch(err => {
     res.json({confirmation: 'fail', message: err.message})
