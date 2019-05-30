@@ -1,4 +1,4 @@
-const Register = require('../models/Users')
+const Login = require('../models/Users')
 
 module.exports = {
   get: () => {
@@ -9,14 +9,16 @@ module.exports = {
   },
   post: (params) => {
     return new Promise((resolve, reject) => {
-      Register.findOne({'nickname': params['nickname']}).select('-_id -reg_time +password -type -reg_time').then(data => {
+      Login.findOne({'nickname': params['nickname']}).select('+_id -reg_time +password -type -reg_time').then(data => {
+        if(data == null){
+          throw new Error('Wrong password.')
+        }
         if(data.nickname == params.nickname && data.password == params.password)
         {
-          resolve('Succesfull login.')
+          resolve(data._id.toString())
         }
         else{
-          err=new Error('Wrong password.')
-          reject(err)
+          throw new Error('Wrong password.')
         }
       }).catch(err => {
         reject(err)
