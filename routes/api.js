@@ -30,6 +30,20 @@ router.get('/leave/:eventid', (req, res) => {
     res.json({confirmation: 'fail', message: err.message})
   })
 })
+
+router.get('/myevents', (req, res) => {
+  const userid = req.cookies.uID
+  if (userid == null){
+    res.json({confirmation: 'fail', message: 'Invalid Session/Cookie Value'})
+  }
+
+  controllers['event'].myevents(userid).then(data => {
+    res.json({confirmation: 'success', data: data})
+  }).catch(err => {
+    res.json({confirmation: 'fail', message: err.message})
+  })
+})
+
 router.get('/:resource', (req, res) => {
   const resource = req.params.resource
   const controller = controllers[resource]

@@ -88,5 +88,15 @@ module.exports = {
         reject(err)
       })
     })
+  },
+
+  myevents: (uID) => {
+    return new Promise((resolve, reject) => {
+      Events.find({members: uID},{}).then(data => {
+        resolve(data)
+      }).catch(err => {
+        reject(err)
+      })
+    })
   }
 }
