@@ -8,6 +8,7 @@ router.get('/join/:eventid', (req, res) => {
   const userid = req.cookies.uID
   if (userid == null){
     res.json({confirmation: 'fail', message: 'Invalid Session/Cookie Value'})
+    return
   }
 
   controllers['event'].join(eventid, userid).then(data => {
@@ -22,6 +23,7 @@ router.get('/leave/:eventid', (req, res) => {
   const userid = req.cookies.uID
   if (userid == null){
     res.json({confirmation: 'fail', message: 'Invalid Session/Cookie Value'})
+    return
   }
 
   controllers['event'].leave(eventid, userid).then(data => {
@@ -35,6 +37,7 @@ router.get('/myevents', (req, res) => {
   const userid = req.cookies.uID
   if (userid == null){
     res.json({confirmation: 'fail', message: 'Invalid Session/Cookie Value'})
+    return
   }
 
   controllers['event'].myevents(userid).then(data => {
