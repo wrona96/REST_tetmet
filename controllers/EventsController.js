@@ -1,4 +1,6 @@
 const Events = require('../models/Events')
+const Users = require('../models/Users')
+
 const options = {
   runValidators: true
 }
@@ -88,6 +90,27 @@ module.exports = {
         reject(err)
       })
     })
+  },
+
+  getByName: (eID) => {
+      return new Promise((resolve, reject) => {
+        Events.findOne({_id: eID}, {}).then(data => {
+          if (data == null){
+            throw new Error('Wrong event id.')
+          }
+          Users.find({_id: data.members}).then(users => {
+            data = JSON.parse(JSON.stringify(data));
+            data.nicknames = []
+            users.forEach(user => {
+              data.nicknames.push(user.nickname)
+            })
+            delete data.members
+            resolve(data)
+          })
+        })
+      }).catch(err => {
+        reject(err)
+      })
   },
 
   myevents: (uID) => {
