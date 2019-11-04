@@ -12,7 +12,8 @@ const Users = new mongoose.Schema({
     maxlength: 25
   },
   hash_password: {
-    type: String
+    type: String,
+    select: false
   },
   email: {
     type: String,
@@ -30,7 +31,8 @@ const Users = new mongoose.Schema({
   },
   salt: {
     type: String,
-    default: ''
+    default: '',
+    select: false
   }
 }, {versionKey: false});
 
