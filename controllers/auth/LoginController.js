@@ -14,8 +14,8 @@ module.exports = {
           throw new Error('Wrong nickname or password.');
         }
         if (Login(data).auth(params.password)) {
-          var token = jwt.sign({ _id: data._id, nickname: data.nickname }, process.env.JWT || 'TESTOWANIE', {
-            expiresIn: 1000 * 60 * 60 * 24 // expires in 24 hours
+          var token = jwt.sign({ _id: data._id.toString() }, process.env.JWT || 'TESTOWANIE', {
+            expiresIn: '24h' // expires in 24 hours
           }, function (err, token) {
               if(err){
                 throw err;

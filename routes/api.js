@@ -6,7 +6,7 @@ const controllers = require('../controllers/api')
 router.get('/join/:eventid', (req, res) => {
   const eventid = req.params.eventid
   const userid = req.headers.userId
-  console.error("Cookies: /join ", req.cookies);
+
   if (userid == null){
     res.json({confirmation: 'fail', message: 'Invalid Session/Cookie Value'})
     return
@@ -22,7 +22,7 @@ router.get('/join/:eventid', (req, res) => {
 router.get('/leave/:eventid', (req, res) => {
   const eventid = req.params.eventid
   const userid = req.headers.userId
-  console.error("Cookies: /leave ", req.cookies);
+
   if (userid == null){
     res.json({confirmation: 'fail', message: 'Invalid Session/Cookie Value'})
     return
@@ -37,7 +37,7 @@ router.get('/leave/:eventid', (req, res) => {
 
 router.get('/myevents', (req, res) => {
   const userid = req.headers.userId
-  console.error("Cookies: /myevents ", req.cookies);
+
   if (userid == null){
     res.json({confirmation: 'fail', message: 'Invalid Session/Cookie Value'})
     return
