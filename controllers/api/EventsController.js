@@ -1,5 +1,5 @@
-const Events = require('../models/Events')
-const Users = require('../models/Users')
+const Events = require('../../models/Events')
+const Users = require('../../models/Users')
 
 const options = {
   runValidators: true

@@ -1,11 +1,11 @@
 const Router = require('router');
 const router = Router();
-const controllers = require('../controllers')
+const controllers = require('../controllers/api')
 
 // GET - dump db data:
 router.get('/join/:eventid', (req, res) => {
   const eventid = req.params.eventid
-  const userid = req.cookies.uID
+  const userid = req.headers.userId
   console.error("Cookies: /join ", req.cookies);
   if (userid == null){
     res.json({confirmation: 'fail', message: 'Invalid Session/Cookie Value'})
@@ -21,7 +21,7 @@ router.get('/join/:eventid', (req, res) => {
 
 router.get('/leave/:eventid', (req, res) => {
   const eventid = req.params.eventid
-  const userid = req.cookies.uID
+  const userid = req.headers.userId
   console.error("Cookies: /leave ", req.cookies);
   if (userid == null){
     res.json({confirmation: 'fail', message: 'Invalid Session/Cookie Value'})
@@ -36,7 +36,7 @@ router.get('/leave/:eventid', (req, res) => {
 })
 
 router.get('/myevents', (req, res) => {
-  const userid = req.cookies.uID
+  const userid = req.headers.userId
   console.error("Cookies: /myevents ", req.cookies);
   if (userid == null){
     res.json({confirmation: 'fail', message: 'Invalid Session/Cookie Value'})

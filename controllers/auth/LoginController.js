@@ -1,5 +1,5 @@
-const Login = require('../models/Users');
-
+const Login = require('../../models/Users');
+const jwt = require('jsonwebtoken');
 module.exports = {
   get: () => {
     return new Promise((resolve, reject) => {
@@ -14,7 +14,15 @@ module.exports = {
           throw new Error('Wrong nickname or password.');
         }
         if (Login(data).auth(params.password)) {
-          resolve(data._id.toString());
+          var token = jwt.sign({ _id: data._id, nickname: data.nickname }, process.env.JWT || 'TESTOWANIE', {
+            expiresIn: 1000 * 60 * 60 * 24 // expires in 24 hours
+          }, function (err, token) {
+              if(err){
+                throw err;
+              } else {
+                resolve(token);
+              }
+          });
         } else {
           reject(new Error('Wrong password.'));
         }

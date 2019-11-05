@@ -1,4 +1,4 @@
-const Register = require('../models/Users');
+const Register = require('../../models/Users');
 
 module.exports = {
   get: () => {
