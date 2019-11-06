@@ -13,13 +13,14 @@ module.exports = {
         if (data == null) {
           throw new Error('Wrong nickname or password.');
         }
-        if (Login(data).auth(params.password)) {
+        if (data.auth(params.password)) {
           var token = jwt.sign({ _id: data._id.toString() }, process.env.JWT || 'TESTOWANIE', {
             expiresIn: '24h' // expires in 24 hours
           }, function (err, token) {
               if(err){
                 throw err;
               } else {
+                data.updateOne({"session": token}).exec();
                 resolve(token);
               }
           });

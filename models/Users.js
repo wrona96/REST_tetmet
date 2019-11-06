@@ -33,6 +33,12 @@ const Users = new mongoose.Schema({
     type: String,
     default: '',
     select: false
+  },
+  session: {
+    type: String,
+    required: false,
+    select: false,
+    default: ''
   }
 }, {versionKey: false});
 
@@ -64,6 +70,15 @@ Users.methods = {
       return this.hash_password === this.encryptPassword(plain);
     } catch (err) {
       throw new Error('Wrong password.');
+    }
+  },
+  compareSession: function(rawSession) {
+    if (!rawSession)
+      throw new Error('Session do not exist.');
+    try {
+      return this.session === rawSession;
+    } catch (err) {
+      throw new Error('Wrong session.');
     }
   }
 };
