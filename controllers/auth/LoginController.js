@@ -20,7 +20,6 @@ module.exports = {
               if(err){
                 throw err;
               } else {
-                data.updateOne({"session": token}).exec();
                 resolve(token);
               }
           });
