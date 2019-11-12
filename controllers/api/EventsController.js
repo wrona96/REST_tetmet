@@ -1,5 +1,5 @@
-const Events = require('../models/Events')
-const Users = require('../models/Users')
+const Events = require('../../models/Events')
+const Users = require('../../models/Users')
 
 const options = {
   runValidators: true
@@ -107,9 +107,9 @@ module.exports = {
             delete data.members
             resolve(data)
           })
+        }).catch(err => {
+          reject(err)
         })
-      }).catch(err => {
-        reject(err)
       })
   },
 

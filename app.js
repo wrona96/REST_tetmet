@@ -1,10 +1,11 @@
 //Import prepared secure app
 const app = require('./secure')
 const mongoose = require('mongoose');
-
+const jwt = require('jsonwebtoken')
 const options = {
   useNewUrlParser: true,
   useCreateIndex: true,
+  useUnifiedTopology: true,
   useFindAndModify: false,
   autoIndex: false, // Don't build indexes
   reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
@@ -25,8 +26,21 @@ mongoose.connect(process.env.DB || 'mongodb://localhost/tetmet',options).then(
 //Set Routers
 const index = require('./routes/index')
 const api = require('./routes/api')
+const auth = require('./routes/auth')
 app.use('/', index)
-app.use('/api', api)
+app.use('/auth', auth)
+app.use('/api', authorize, api)
+
+function authorize(req, res, next) {
+  jwt.verify(req.headers['x-access-token'], process.env.JWT || 'TESTOWANIE', function(err, decoded) {
+    if (err) {
+      res.status(401).render('401');
+    }else{
+      req.headers.userId = decoded._id;
+      next();
+    }
+  });
+}
 
 //Error 404 handling
 app.use((req, res) => {
