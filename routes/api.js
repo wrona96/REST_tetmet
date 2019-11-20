@@ -35,6 +35,16 @@ router.get('/myevents', (req, res) => {
   })
 })
 
+router.get('/me', (req, res) => {
+  const userid = req.headers.userId
+
+  controllers['user'].getById(userid).then(data => {
+    res.json({confirmation: 'success', data: data})
+  }).catch(err => {
+    res.json({confirmation: 'fail', message: err.message})
+  })
+})
+
 router.get('/:resource', (req, res) => {
   const resource = req.params.resource
   const controller = controllers[resource]

@@ -30,6 +30,21 @@ module.exports = {
     })
   },
 
+  getById: (id) => {
+    return new Promise((resolve, reject) => {
+      Users.find({
+        '_id': id
+      }, {_id: 0}).then(data => {
+        if (data == 0) {
+          throw err
+        }
+        resolve(data)
+      }).catch(err => {
+        reject(new Error('User not found'))
+      })
+    })
+  },
+
   put: (body) => {
     return new Promise((resolve, reject) => {
       id = body._id
