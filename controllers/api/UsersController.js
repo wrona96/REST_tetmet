@@ -5,9 +5,9 @@ const options = {
 
 module.exports = {
 
-  get: () => {
+  get: (offset=null) => {
     return new Promise((resolve, reject) => {
-      Users.find().then(data => {
+      Users.find().sort({'_id' : 'desc'}).skip(10 * offset).limit(offset == null ? null : 10).then(data => {
         resolve(data)
       }).catch(err => {
         reject(err)

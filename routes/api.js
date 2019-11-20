@@ -48,14 +48,14 @@ router.get('/me', (req, res) => {
 router.get('/:resource', (req, res) => {
   const resource = req.params.resource
   const controller = controllers[resource]
-  const filters = req.query
+  const offset = req.query.offset
 
   if (controller == null) {
     res.status(404).render('404', {title: '404: Page Not Found'});
     return
   }
 
-  controller.get(filters).then(data => {
+  controller.get(offset).then(data => {
     res.json({confirmation: 'success', data: data})
   }).catch(err => {
     res.json({confirmation: 'fail', message: err.message})
@@ -87,7 +87,7 @@ router.get('/:resource/:name', (req, res) => {
 router.post('/:resource', (req, res) => {
   const resource = req.params.resource
   const controller = controllers[resource]
-
+  
   if (controller == null) {
     res.status(404).render('404', {title: '404: Page Not Found'});
     return
