@@ -7,11 +7,6 @@ router.get('/join/:eventid', (req, res) => {
   const eventid = req.params.eventid
   const userid = req.headers.userId
 
-  if (userid == null){
-    res.json({confirmation: 'fail', message: 'Invalid Session/Cookie Value'})
-    return
-  }
-
   controllers['event'].join(eventid, userid).then(data => {
     res.json({confirmation: 'success', data: data})
   }).catch(err => {
@@ -23,11 +18,6 @@ router.get('/leave/:eventid', (req, res) => {
   const eventid = req.params.eventid
   const userid = req.headers.userId
 
-  if (userid == null){
-    res.json({confirmation: 'fail', message: 'Invalid Session/Cookie Value'})
-    return
-  }
-
   controllers['event'].leave(eventid, userid).then(data => {
     res.json({confirmation: 'success', data: data})
   }).catch(err => {
@@ -37,11 +27,6 @@ router.get('/leave/:eventid', (req, res) => {
 
 router.get('/myevents', (req, res) => {
   const userid = req.headers.userId
-
-  if (userid == null){
-    res.json({confirmation: 'fail', message: 'Invalid Session/Cookie Value'})
-    return
-  }
 
   controllers['event'].myevents(userid).then(data => {
     res.json({confirmation: 'success', data: data})
@@ -100,9 +85,6 @@ router.post('/:resource', (req, res) => {
 
   console.error(req.body);
   controller.post(req.body).then(data => {
-    if (resource == 'login'){
-      res.cookie('uID', data, {maxAge: 1000 * 60 * 60 * 24, path: '/api', httpOnly: true})
-    }
     res.json({confirmation: 'success', data: data})
   }).catch(err => {
     res.json({confirmation: 'fail', message: err.message})
@@ -134,10 +116,10 @@ router.delete('/:resource/:id', (req, res) => {
   const controller = controllers[resource]
 
   if (controller == null) {
-    res.json({confirmation: 'fail', message: 'Invalid Resource'})
-
+    res.status(404).render('404', {title: '404: Page Not Found'});
     return
   }
+
   console.error("delete in : /", resource, "/", id);
   controller.delete(id).then(data => {
     res.json({confirmation: 'success', data: data})
