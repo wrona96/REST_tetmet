@@ -15,10 +15,16 @@ module.exports = {
     })
   },
 
-  getByName: (name) => {
+  getByName: (name, exact=0) => {
     return new Promise((resolve, reject) => {
+      if(exact == 1){
+        selector = name
+      }
+      else{
+        selector = new RegExp(name, 'i')
+      }
       Users.find({
-        'nickname': new RegExp(name, 'i')
+        'nickname': selector
       }).then(data => {
         if (data == 0) {
           throw err

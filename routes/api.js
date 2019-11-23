@@ -76,7 +76,9 @@ router.get('/:resource/:name', (req, res) => {
     return
   }
 
-  controller.getByName(name).then(data => {
+  const exact = req.query.exact
+
+  controller.getByName(name, exact).then(data => {
     res.json({confirmation: 'success', data: data})
   }).catch(err => {
     res.json({confirmation: 'fail', message: err.message})
