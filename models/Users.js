@@ -21,6 +21,25 @@ const Users = new mongoose.Schema({
     unique: true,
     validate: [validator.isEmail, 'Invalid email']
   },
+  sex : {
+    type: String,
+    enum: [
+        'male', 'female', 'undefined'
+    ],
+    default: 'undefined'
+  },
+  name:{
+    type: String,
+    minlength: 3,
+    maxlength: 25,
+    default: 'undefined'
+  },
+  surname:{
+    type: String,
+    minlength: 3,
+    maxlength: 25,
+    default: 'undefined'
+  },
   type: {
     type: Number,
     default: 0
