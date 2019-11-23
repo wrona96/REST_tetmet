@@ -39,7 +39,7 @@ function authorize(req, res, next) {
       res.status(401).render('401');
     } else {
       User.findOne({'_id': decoded._id}).then(data => {
-        if (data == 0) {
+        if (data == 0 || data == null) {
           res.status(401).render('401');
         } else {
           req.headers.userLogin = data.nickname;
