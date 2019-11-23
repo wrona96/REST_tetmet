@@ -17,8 +17,11 @@ module.exports = {
     })
   },
 
-  post: (params) => {
+  post: (params, userid) => {
     return new Promise((resolve, reject) => {
+      params.owner = userid
+      params.members = [userid]
+      delete params._id
       Events.create(params).then(data => {
         resolve('Succesfull registed.')
       }).catch(err => {

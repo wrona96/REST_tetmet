@@ -87,14 +87,15 @@ router.get('/:resource/:name', (req, res) => {
 router.post('/:resource', (req, res) => {
   const resource = req.params.resource
   const controller = controllers[resource]
-  
+  const userid = req.headers.userId
+
   if (controller == null) {
     res.status(404).render('404', {title: '404: Page Not Found'});
     return
   }
 
   console.error(req.body);
-  controller.post(req.body).then(data => {
+  controller.post(req.body, userid).then(data => {
     res.json({confirmation: 'success', data: data})
   }).catch(err => {
     res.json({confirmation: 'fail', message: err.message})

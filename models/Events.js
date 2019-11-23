@@ -47,6 +47,10 @@ const Events = new mongoose.Schema({
     type: [mongoose.Schema.Types.ObjectId],
     default: ['3ca7346942e6f13b34582098']
   },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  },
   tags: {
     type: [String],
     enum: [

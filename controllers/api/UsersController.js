@@ -19,7 +19,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       Users.find({
         'nickname': new RegExp(name, 'i')
-      }, {_id: 0}).then(data => {
+      }).then(data => {
         if (data == 0) {
           throw err
         }
@@ -34,7 +34,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       Users.find({
         '_id': id
-      }, {_id: 0}).then(data => {
+      }).then(data => {
         if (data == 0) {
           throw err
         }
