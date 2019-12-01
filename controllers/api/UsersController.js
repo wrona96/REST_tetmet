@@ -1,6 +1,8 @@
 const Users = require('../../models/Users')
 const options = {
-  runValidators: true
+  runValidators: true,
+  setDefaultsOnInsert: true,
+  context: 'query'
 }
 
 module.exports = {
@@ -51,11 +53,13 @@ module.exports = {
     })
   },
 
-  put: (body) => {
+  put: (body, userId) => {
     return new Promise((resolve, reject) => {
-      id = body._id
-      delete body._id
-      Users.findByIdAndUpdate(id, body, options).then(data => {
+      delete body.salt
+      delete body.reg_time
+      delete body.hash_password
+      delete body.type
+      Users.findByIdAndUpdate(userId, body, options).then(data => {
         if (data == null) {
           throw new Error("Wrong ID.")
         }

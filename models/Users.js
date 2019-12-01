@@ -73,7 +73,7 @@ Users.methods = {
     try {
       return crypto.createHmac('sha512', this.salt).update(password).digest('hex');
     } catch (err) {
-      throw new Error('Can not hash this String.');
+      throw new Error(err);
     }
   },
   auth: function(plain) {
