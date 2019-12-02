@@ -60,7 +60,7 @@ const Users = new mongoose.Schema({
 
 Users.virtual('password').set(function(password) {
   this._password = password;
-  this.salt = this.makeSalt();
+  this.salt = this.salt == "" ? this.makeSalt() : this.salt;
   this.hash_password = this.encryptPassword(password);
 }).get(function() {
   return this._password;
@@ -74,6 +74,7 @@ Users.methods = {
     if (!password)
       throw new Error('Password do not exist.');
     try {
+
       return crypto.createHmac('sha512', this.salt).update(password).digest('hex');
     } catch (err) {
       throw new Error(err);

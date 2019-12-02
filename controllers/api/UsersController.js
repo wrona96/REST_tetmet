@@ -78,19 +78,18 @@ module.exports = {
           if (data == null) {
             throw new Error("Wrong ID.")
           }
-          console.log(data.salt)
           if (data.auth(body.oldPass)) {
-            data.hash_password = data.encryptPassword(body.newPass)
             data.password = body.newPass
           }
           else {
             throw new Error("Wrong Password")
           }
           data.save().then(data => {
-            resolve('Password has been changed')
+              resolve('Password has been changed')
           }).catch(err => {
             reject(err)
           })
+
         }).catch(err => {
           reject(err)
         })

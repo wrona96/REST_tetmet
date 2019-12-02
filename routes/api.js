@@ -108,7 +108,7 @@ router.post('/:resource', (req, res) => {
 
 router.put('/changePassword', (req, res) => {
   const userId = req.headers.userId
-  console.error("PUT in : /", "\nBODY: \n", req.body);
+
   controllers['user'].changePassword(req.body, userId).then(data => {
     res.json({confirmation: 'success', data: data})
   }).catch(err => {
