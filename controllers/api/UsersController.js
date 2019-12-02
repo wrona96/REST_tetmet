@@ -78,6 +78,7 @@ module.exports = {
           if (data == null) {
             throw new Error("Wrong ID.")
           }
+          console.log(data.salt)
           if (data.auth(body.oldPass)) {
             data.hash_password = data.encryptPassword(body.newPass)
             data.password = body.newPass
