@@ -105,6 +105,17 @@ router.post('/:resource', (req, res) => {
 })
 
 // PUT - update entities:
+
+router.put('/changePassword', (req, res) => {
+  const userId = req.headers.userId
+
+  controllers['user'].changePassword(req.body, userId).then(data => {
+    res.json({confirmation: 'success', data: data})
+  }).catch(err => {
+    res.json({confirmation: 'fail', message: err.message})
+  })
+})
+
 router.put('/:resource', (req, res) => {
   const resource = req.params.resource
   const controller = controllers[resource]
@@ -122,6 +133,7 @@ router.put('/:resource', (req, res) => {
     res.json({confirmation: 'fail', message: err.message})
   })
 })
+
 
 // DELETE - delete entities:
 router.delete('/:resource/:id', (req, res) => {

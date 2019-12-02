@@ -55,8 +55,6 @@ module.exports = {
 
   put: (body, userId) => {
     return new Promise((resolve, reject) => {
-      delete body.salt
-      delete body.reg_time
       delete body.hash_password
       delete body.type
       Users.findByIdAndUpdate(userId, body, options).then(data => {
@@ -67,6 +65,35 @@ module.exports = {
       }).catch(err => {
         reject(err)
       })
+    })
+  },
+
+  changePassword: (body, userId) => {
+    return new Promise((resolve, reject) => {
+      if (body.oldPass == null || body.newPass == null || body.oldPass == body.newPass ){
+        throw new Error("No Params or password the same")
+      }
+      else {
+        Users.findById(userId).select('+salt +hash_password').then(data => {
+          if (data == null) {
+            throw new Error("Wrong ID.")
+          }
+          if (data.auth(body.oldPass)) {
+            data.hash_password = data.encryptPassword(body.newPass)
+            data.password = body.newPass
+          }
+          else {
+            throw new Error("Wrong Password")
+          }
+          data.save().then(data => {
+            resolve('Password has been changed')
+          }).catch(err => {
+            reject(err)
+          })
+        }).catch(err => {
+          reject(err)
+        })
+      }
     })
   },
 
