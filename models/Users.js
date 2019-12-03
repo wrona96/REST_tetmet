@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const uniqueValidator = require('mongoose-unique-validator');
-const immutableValidator = require('mongoose-immutable-plugin');
 const crypto = require('crypto');
 
 const Users = new mongoose.Schema({
@@ -47,14 +46,12 @@ const Users = new mongoose.Schema({
   },
   reg_time: {
     type: Date,
-    default: Date.now,
-    immutable: true
+    default: Date.now
   },
   salt: {
     type: String,
     default: '',
-    select: false,
-    immutable: true
+    select: false
   }
 }, {versionKey: false});
 
@@ -100,5 +97,4 @@ Users.pre('save', function(next) {
 });
 
 Users.plugin(uniqueValidator);
-Users.plugin(immutableValidator);
 module.exports = mongoose.model('Users', Users);
