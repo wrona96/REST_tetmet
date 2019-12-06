@@ -2,7 +2,9 @@ const Events = require('../../models/Events')
 const Users = require('../../models/Users')
 
 const options = {
-  runValidators: true
+  runValidators: true,
+  setDefaultsOnInsert: true,
+  context: 'query'
 }
 
 module.exports = {
@@ -45,13 +47,18 @@ module.exports = {
     })
   },
 
-  delete: (id) => {
+  delete: (eID, uID) => {
     return new Promise((resolve, reject) => {
-      Events.findByIdAndRemove(id).then(data => {
+
+      Events.findById(eID).then(data => {
         if (data == null) {
           throw new Error("Wrong ID.")
         }
-        resolve("Event removed.")
+        if (data.isOwner(uID)) {
+          data.remove()
+          resolve("Event removed.")
+        }
+        throw new Error("You are not owner.")
       }).catch(err => {
         reject(err)
       })
@@ -83,12 +90,12 @@ module.exports = {
           throw new Error('Wrong event id.')
         }
         let index = data.members.indexOf(uID)
-        if (index > -1){
+        if (index > -1 && !data.isOwner(uID)){
           data.members.splice(index, 1)
           Events.findOneAndUpdate({_id: eID},{members: data.members}).then()
           resolve('Remove from event.')
         }
-        throw new Error('You are not member at this event.')
+        throw new Error('You are not member at this event or you are owner.')
       }).catch(err => {
         reject(err)
       })
@@ -101,13 +108,12 @@ module.exports = {
           if (data == null){
             throw new Error('Wrong event id.')
           }
-          Users.find({_id: data.members}).then(users => {
+          Users.find({_id: data.members}).select('nickname').then(users => {
             data = JSON.parse(JSON.stringify(data));
-            data.nicknames = []
+            data.members = []
             users.forEach(user => {
-              data.nicknames.push(user.nickname)
+                data.members.push(user)
             })
-            delete data.members
             resolve(data)
           })
         }).catch(err => {

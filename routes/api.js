@@ -139,6 +139,7 @@ router.put('/:resource', (req, res) => {
 router.delete('/:resource/:id', (req, res) => {
   const resource = req.params.resource
   const id = req.params.id
+  const userId = req.headers.userId
   const controller = controllers[resource]
 
   if (controller == null) {
@@ -147,7 +148,7 @@ router.delete('/:resource/:id', (req, res) => {
   }
 
   console.error("delete in : /", resource, "/", id);
-  controller.delete(id).then(data => {
+  controller.delete(id, userId).then(data => {
     res.json({confirmation: 'success', data: data})
   }).catch(err => {
     res.json({confirmation: 'fail', message: err.message})

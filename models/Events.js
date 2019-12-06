@@ -3,7 +3,7 @@ const validator = require('validator');
 const uniqueValidator = require('mongoose-unique-validator');
 
 const GeoSchema = new mongoose.Schema({
-  city: {
+  address: {
     type: String,
     required: true
   },
@@ -36,20 +36,20 @@ const Events = new mongoose.Schema({
     maxlength: 150
   },
   location: {
-    type: GeoSchema,
-    default: {
-      'city': 'Poznań',
-      'lat': 52.40000,
-      'long': 16.91667
-    }
+    type: GeoSchema
   },
   members: {
-    type: [mongoose.Schema.Types.ObjectId],
-    default: ['3ca7346942e6f13b34582098']
+    type: [mongoose.Schema.Types.ObjectId]
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     required: true
+  },
+  slots: {
+    type: Number,
+    set: v => parseInt(v),
+    min: 3,
+    max: 99
   },
   tags: {
     type: [String],
@@ -67,5 +67,10 @@ const Events = new mongoose.Schema({
   }
 }, {versionKey: false})
 
+Events.methods = {
+  isOwner: function(uID) {
+    return this.owner == uID;
+  }
+}
 Events.plugin(uniqueValidator);
 module.exports = mongoose.model('Events', Events)
