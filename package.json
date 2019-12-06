@@ -18,13 +18,13 @@
     "http": "^0.0.0",
     "https": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.5.3",
-    "mongoose-immutable-plugin": "^1.0.3",
+    "mongoose": "^5.7.13",
     "mongoose-unique-validator": "^2.0.3",
-    "pug": "^2.0.3",
+    "morgan-body": "^2.4.8",
+    "pug": "^2.0.4",
     "router": "^1.3.3",
     "serve-favicon": "^2.5.0",
-    "validator": "^12.0.0"
+    "validator": "^12.1.0"
   },
   "keywords": [
     "node",
