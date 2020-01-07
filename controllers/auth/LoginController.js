@@ -9,7 +9,7 @@ module.exports = {
   },
   post: (params) => {
     return new Promise((resolve, reject) => {
-      Login.findOne({'nickname': params['nickname']},{salt: 1, hash_password: 1}).then(data => {
+      Login.findOne({'nickname': params.nickname},{salt: 1, hash_password: 1}).then(data => {
         if (data == null) {
           throw new Error('Wrong nickname or password.');
         }
@@ -20,7 +20,10 @@ module.exports = {
               if(err){
                 throw err;
               } else {
-                resolve(token);
+                let result = {}
+                result.token = token
+                result._id = data._id.toString()
+                resolve(result);
               }
           });
         } else {

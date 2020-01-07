@@ -96,7 +96,6 @@ router.post('/:resource', (req, res) => {
     return
   }
 
-  console.error(req.body);
   controller.post(req.body, userid).then(data => {
     res.json({confirmation: 'success', data: data})
   }).catch(err => {
@@ -126,7 +125,6 @@ router.put('/:resource', (req, res) => {
     return
   }
 
-  console.error("PUT in : /", resource, "\nBODY: \n", req.body);
   controller.put(req.body, userId).then(data => {
     res.json({confirmation: 'success', data: data})
   }).catch(err => {
@@ -139,6 +137,7 @@ router.put('/:resource', (req, res) => {
 router.delete('/:resource/:id', (req, res) => {
   const resource = req.params.resource
   const id = req.params.id
+  const userId = req.headers.userId
   const controller = controllers[resource]
 
   if (controller == null) {
@@ -146,8 +145,7 @@ router.delete('/:resource/:id', (req, res) => {
     return
   }
 
-  console.error("delete in : /", resource, "/", id);
-  controller.delete(id).then(data => {
+  controller.delete(id, userId).then(data => {
     res.json({confirmation: 'success', data: data})
   }).catch(err => {
     res.json({confirmation: 'fail', message: err.message})

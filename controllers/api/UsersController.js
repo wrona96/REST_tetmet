@@ -20,14 +20,12 @@ module.exports = {
   getByName: (name, exact=0) => {
     return new Promise((resolve, reject) => {
       if(exact == 1){
-        selector = name
+        selector = {'_id' : name}
       }
       else{
-        selector = new RegExp(name, 'i')
+        selector = {'nickname' : new RegExp(name, 'i')}
       }
-      Users.find({
-        'nickname': selector
-      }).then(data => {
+      Users.find(selector).then(data => {
         if (data == 0) {
           throw err
         }
@@ -97,9 +95,9 @@ module.exports = {
     })
   },
 
-  delete: (id) => {
+  delete: (id, uID) => {
     return new Promise((resolve, reject) => {
-      Users.findByIdAndRemove(id).then(data => {
+      Users.findByIdAndRemove(uID).then(data => {
         if (data == null) {
           throw new Error("Wrong ID.")
         }
