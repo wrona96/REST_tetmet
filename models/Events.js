@@ -64,6 +64,10 @@ const Events = new mongoose.Schema({
     validate: function() {
       return validator.isAfter(this.start_time.toString())
     }
+  },
+  chatID: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
   }
 }, {versionKey: false})
 

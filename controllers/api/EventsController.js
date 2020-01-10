@@ -1,5 +1,6 @@
 const Events = require('../../models/Events')
 const Users = require('../../models/Users')
+const Comments = require('../../models/Comments')
 
 const options = {
   runValidators: true,
@@ -24,11 +25,19 @@ module.exports = {
       params.owner = userid
       params.members = [userid]
       delete params._id
-      Events.create(params).then(data => {
-        resolve('Succesfull registed.')
+      Comments.create({comments: []}).then(data => {
+        console.log(data)
+        params.chatID = data._id;
+        Events.create(params).then(data => {
+          console.log(data)
+          resolve('Succesfull registed.')
+        }).catch(err => {
+          reject(err)
+        })
       }).catch(err => {
         reject(err)
       })
+
     })
   },
 
