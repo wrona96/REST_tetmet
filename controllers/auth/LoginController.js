@@ -15,7 +15,7 @@ module.exports = {
         }
         if (data.auth(params.password)) {
           var token = jwt.sign({ _id: data._id.toString() }, process.env.JWT || 'TESTOWANIE', {
-            expiresIn: '24h' // expires in 24 hours
+            expiresIn: '30d' // expires in 30 days
           }, function (err, token) {
               if(err){
                 throw err;
