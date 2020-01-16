@@ -6,6 +6,11 @@ router.get('/', (req, res) => {
 	res.status(200).render('index', {title: 'Front Page'});
 })
 
+router.get('/robots.txt', function (req, res) {
+    res.type('text/plain')
+    res.send("User-agent: *\nDisallow: /");
+});
+
 /*  This route render json data */
 router.get('/json', (req, res) => {
 	res.json({
