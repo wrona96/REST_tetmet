@@ -30,13 +30,11 @@ const Users = new mongoose.Schema({
   },
   name:{
     type: String,
-    minlength: 3,
     maxlength: 25,
     default: 'undefined'
   },
   surname:{
     type: String,
-    minlength: 3,
     maxlength: 25,
     default: 'undefined'
   },
@@ -89,7 +87,7 @@ Users.methods = {
 };
 
 Users.pre('save', function(next) {
-  if (RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,}').test(this._password)) {
+  if (RegExp('.{11,35}').test(this._password)) {
     next();
   } else {
     throw new Error('Password is too weak.');

@@ -55,6 +55,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       delete body.hash_password
       delete body.type
+      delete body.nickname
       Users.findByIdAndUpdate(userId, body, options).then(data => {
         if (data == null) {
           throw new Error("Wrong ID.")
