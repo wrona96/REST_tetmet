@@ -17,8 +17,9 @@ router.get('/join/:eventid', (req, res) => {
 router.get('/leave/:eventid', (req, res) => {
   const eventid = req.params.eventid
   const userid = req.headers.userId
+  const userLogin = req.headers.userLogin
 
-  controllers['event'].leave(eventid, userid).then(data => {
+  controllers['event'].leave(eventid, userid, userLogin).then(data => {
     res.json({confirmation: 'success', data: data})
   }).catch(err => {
     res.json({confirmation: 'fail', message: err.message})

@@ -5,8 +5,8 @@ const Comment = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    minlength: 7,
-    maxlength: 25
+    minlength: 1,
+    maxlength: 300
   },
   creator: {
     type: mongoose.Schema.Types.ObjectId,

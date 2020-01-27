@@ -21,6 +21,17 @@ const GeoSchema = new mongoose.Schema({
   }
 }, {_id: false})
 
+const holder = new mongoose.Schema({
+  nickname: {
+    type: String,
+    required: true
+  },
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  }
+}, {_id: false})
+
 const Events = new mongoose.Schema({
   name: {
     type: String,
@@ -33,13 +44,17 @@ const Events = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 30,
-    maxlength: 150
+    maxlength: 300
   },
   location: {
     type: GeoSchema
   },
   members: {
     type: [mongoose.Schema.Types.ObjectId]
+  },
+  nickholder: {
+    type: [holder],
+    default: []
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
@@ -54,7 +69,7 @@ const Events = new mongoose.Schema({
   tags: {
     type: [String],
     enum: [
-      'Brak', 'Piwo', 'Karty', 'Planszówki'
+      'Brak', 'Piwo', 'Karty', 'Planszówki', 'Wykoppiwo'
     ],
     default: ["Brak"]
   },
