@@ -21,7 +21,7 @@ module.exports = {
               throw new Error("ChatID not Found")
             } else {
               offset != null ?
-              resolve(chat.comments.reverse().splice(0 + (10*offset), 10*(offset+1)))
+              resolve(chat.comments.reverse().splice(0 + (20*offset), 20*(offset+1)))
               : resolve({'length': chat.comments.length});
             }
           }).catch(err => {
