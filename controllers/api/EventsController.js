@@ -1,5 +1,6 @@
 const Events = require('../../models/Events')
 const Users = require('../../models/Users')
+const Comments = require('../../models/Comments')
 
 const options = {
   runValidators: true,
@@ -24,11 +25,19 @@ module.exports = {
       params.owner = userid
       params.members = [userid]
       delete params._id
-      Events.create(params).then(data => {
-        resolve('Succesfull registed.')
+      Comments.create({comments: []}).then(data => {
+        console.log(data)
+        params.chatID = data._id;
+        Events.create(params).then(data => {
+          console.log(data)
+          resolve('Succesfull registed.')
+        }).catch(err => {
+          reject(err)
+        })
       }).catch(err => {
         reject(err)
       })
+
     })
   },
 
@@ -83,19 +92,22 @@ module.exports = {
     })
   },
 
-  leave: (eID, uID) => {
+  leave: (eID, uID, uLogin) => {
     return new Promise((resolve, reject) => {
       Events.findOne({_id: eID},{}).select('-_id -start_time -describe -tags -location').then(data => {
         if (data == null){
           throw new Error('Wrong event id.')
         }
-        let index = data.members.indexOf(uID)
-        if (index > -1 && !data.isOwner(uID)){
-          data.members.splice(index, 1)
-          Events.findOneAndUpdate({_id: eID},{members: data.members}).then()
+        if (data.members.indexOf(uID) > -1 && !data.isOwner(uID)){
+          data.members.splice(data.members.indexOf(uID), 1)
+          if (data.nickholder != [] && data.nickholder.find(ele => ele._id == uID) == undefined){
+            data.nickholder.push({_id: uID, nickname: uLogin})
+          }
+          Events.findOneAndUpdate({_id: eID},{members: data.members, nickholder: data.nickholder}).then()
           resolve('Remove from event.')
+        } else {
+          throw new Error('You are not member at this event or you are owner.')
         }
-        throw new Error('You are not member at this event or you are owner.')
       }).catch(err => {
         reject(err)
       })
